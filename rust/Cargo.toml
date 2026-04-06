@@ -1,6 +1,7 @@
 [workspace]
 resolver = "2"
 members = [
+    "phenotype-auth",
     "phenotype-bid",
     "phenotype-cipher",
     "phenotype-content-hash",
