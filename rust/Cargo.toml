@@ -7,7 +7,7 @@ members = [
     "phenotype-content-hash",
     "phenotype-contracts",
     "phenotype-security-aggregator",
-    "phenotype-policy-engine",
+    "phenotype-authz-engine",
 ]
 
 [workspace.package]
