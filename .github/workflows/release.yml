@@ -1,57 +1,59 @@
-name: Release
+# Publishes Rust crates to crates.io via Trusted Publishing (OIDC).
+# Canonical policy: repos/docs/governance/publishing_guide.md
+# No CARGO_REGISTRY_TOKEN secret is stored; token is minted per-run by
+# rust-lang/crates-io-auth-action after the OIDC handshake.
+#
+# Supersedes the previous token-based release.yml (which used
+# secrets.CARGO_REGISTRY_TOKEN). Revoke that secret after this workflow
+# is verified working on crates.io.
+#
+# USER ACTION REQUIRED (one-time, per crate):
+#   1. Register this repo + workflow filename (`release.yml`) + environment
+#      (`release`) on crates.io under the crate's Settings -> Trusted
+#      Publishing. See publishing_guide.md section 4.1.
+#   2. Ensure target crates have `publish = true` (or no `publish` key) in
+#      their Cargo.toml. Crates not yet registered should keep
+#      `publish = false` and be omitted from the publish step below.
+
+name: release-crates
 
 on:
   push:
-    branches: [main]
-    paths-ignore:
-      - 'docs/**'
-      - '**.md'
+    tags:
+      - 'v*'
 
 permissions:
-  contents: write
-  packages: write
+  id-token: write   # required for OIDC token exchange
+  contents: read
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, 'release:') || contains(github.event.head_commit.message, 'chore(release)')
-    outputs:
-      version: $123steps.version.outputs.version125
+    environment: release
     steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v4
 
-      
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@stable
+      - uses: dtolnay/rust-toolchain@stable
 
-      - name: Build
-        run: cargo build --release
-
-      - name: Test
-        run: cargo test --release
-
-      - name: Determine version
-        id: version
+      - name: Build and test
+        working-directory: rust
         run: |
-          VERSION=$(grep '^version' Cargo.toml | head -1 | cut -d'"' -f2)
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          cargo build --release
+          cargo test --release
 
-      - name: Publish to crates.io
-        run: |
-          cargo publish --token $123secrets.CARGO_REGISTRY_TOKEN125
-      
+      - name: Authenticate with crates.io via OIDC
+        id: auth
+        uses: rust-lang/crates-io-auth-action@v1
 
-  promote:
-    needs: release
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
+      - name: Publish phenotype-policy-engine
+        working-directory: rust
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        run: cargo publish -p phenotype-policy-engine
 
-      - name: Promote to staging
-        uses: KooshaPari/phenotypeActions/promote@main
-        with:
-          version: $123needs.release.outputs.version125
-          channel: beta
-          registry: crates.io
+      # Add additional crates here as they are registered on crates.io:
+      #   - phenotype-bid
+      #   - phenotype-content-hash
+      #   - phenotype-security-aggregator
+      # phenotype-contracts is an internal contract crate; keep
+      # publish = false until a real external consumer exists.
