@@ -85,3 +85,4 @@ AuthKit/
 - **[PhenoPlugins](../PhenoPlugins)** — Plugin system supporting auth-aware extensions
 - **[McpKit](../McpKit)** — MCP tooling with AuthKit integration
 - **[bifrost-extensions](../bifrost-extensions)** — API gateway with unified authentication
+- **[phenoSDK](../phenoSDK)** — DEPRECATED (2026-04-05); auth consolidated into AuthKit. See `/docs/migrations/phenoSDK_to_AuthKit.md` for consolidation details.
