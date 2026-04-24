@@ -1,11 +1,12 @@
 //! Benchmarks for Authvault
 
-use authkit::{
+use authvault::{
     adapters::hashers::{Argon2Hasher, BcryptHasher},
     domain::{
         auth::Authenticator,
         identity::{Permission, Role, User, UserId},
         policy::{Condition, Policy, PolicyEffect, PolicyEngine},
+        ports::PasswordHasher,
         session::Session,
     },
 };
