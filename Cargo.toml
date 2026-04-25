@@ -24,7 +24,7 @@ jsonwebtoken = "9"
 argon2 = "0.5"
 sha2 = "0.11"
 base64 = "0.21"
-rand = "0.10"
+rand = { version = "0.10", features = ["std", "std_rng", "thread_rng"] }
 http = "1"
 axum = "0.7"
 tokio-postgres = "0.7"
@@ -41,6 +41,14 @@ criterion = "0.5"
 
 [profile.release]
 lto = true
+
+[[bench]]
+name = "auth"
+harness = false
+
+[[bench]]
+name = "benchmarks"
+harness = false
 
 [[bench]]
 name = "perf"

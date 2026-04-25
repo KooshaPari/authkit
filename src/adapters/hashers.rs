@@ -19,8 +19,10 @@ impl Default for Argon2Hasher {
 
 impl PasswordHasher for Argon2Hasher {
     fn hash(&self, password: &str) -> Result<String, String> {
-        use argon2::{password_hash::SaltString, Argon2, PasswordHasher};
-        use rand::rngs::OsRng;
+        use argon2::{
+            password_hash::{rand_core::OsRng, SaltString},
+            Argon2, PasswordHasher,
+        };
 
         let salt = SaltString::generate(&mut OsRng);
         let argon2 = Argon2::default();
