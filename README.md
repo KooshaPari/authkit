@@ -1,91 +1,42 @@
 # AuthKit
 
-Unified, cross-platform authentication SDK providing secure identity and access management across Rust, TypeScript, Python, and Go. Implements OAuth 2.0, OpenID Connect, SAML 2.0, and WebAuthn with a consistent, ergonomic API surface across all language bindings.
+> **Status:** Pre-extraction staging repo. Not a published SDK.
 
-## Overview
+AuthKit (formerly AuthVault) is a pre-extraction staging repository for shared infrastructure crates that will eventually move to **phenoShared**. Despite the name, this repository does **not** currently contain authentication SDK code — that work is planned but not started. The crates currently checked in here are general-purpose Phenotype-org infrastructure being staged for extraction.
 
-**AuthKit** is the de facto standard authentication framework for the Phenotype ecosystem. It abstracts away protocol complexity while maintaining strict standards compliance and security-first design. Build secure authentication flows in any language with unified API patterns, battle-tested implementations, and zero cognitive switching costs.
+If you arrived here looking for a unified OAuth/OIDC/SAML/WebAuthn SDK: that does not exist yet in this repo.
 
-**Core Mission**: Deliver language-unified authentication that makes building secure, standards-compliant authentication flows as simple as installing a library.
+## Current Contents
 
-## Technology Stack
+The `rust/` workspace currently contains five infrastructure crates:
 
-- **Languages**: Rust, TypeScript/JavaScript, Python, Go (cross-platform)
-- **Protocols**:
-  - OAuth 2.0 (Authorization Code, Client Credentials, Device Code, PKCE)
-  - OpenID Connect (identity layer on OAuth 2.0)
-  - SAML 2.0 (enterprise SSO)
-  - WebAuthn/Passkeys (passwordless authentication)
-  - JWT (token generation, validation, refresh)
-- **Security**: Built-in protections (CSRF, XSS mitigation), secure defaults, automatic best practices
-- **Providers**: Auth0, Okta, AWS Cognito, Keycloak, Google, GitHub, and custom OIDC servers
+| Crate | Purpose |
+|-------|---------|
+| `phenotype-bid` | Bid / auction primitives shared across Phenotype services |
+| `phenotype-content-hash` | Content-addressable hashing utilities |
+| `phenotype-contracts` | Cross-service contract / interface definitions |
+| `phenotype-policy-engine` | Rule-based policy evaluation (TOML-configured) |
+| `phenotype-security-aggregator` | Security signal aggregation across sources |
 
-## Key Features
-
-- **Language-Unified API**: Identical concepts, patterns, and method names across Rust, TypeScript, Python, and Go
-- **Protocol Abstraction**: Handle OAuth/OIDC/SAML complexity internally; intuitive high-level APIs
-- **Security-First**: Secure defaults, automatic best practices, built-in CSRF/XSS protections
-- **Provider Agnostic**: Single integration point for multiple identity providers
-- **Type Safety**: Leverages native type systems (Rust's type safety, TypeScript generics, Python dataclasses, Go interfaces)
-- **Enterprise Ready**: Support for SAML, custom claims, fine-grained access control
-
-## Quick Start
+Build:
 
 ```bash
-# Clone and explore
-git clone <repo-url>
-cd AuthKit
-
-# Review architecture and requirements
-cat CLAUDE.md          # Governance & constraints
-cat PRD.md             # Full product specification
-cat AGENTS.md          # Agent operating contract
-
-# Explore language-specific implementations
-ls -la rust/           # Rust crates
-ls -la typescript/     # TypeScript/Node.js packages
-ls -la python/         # Python packages
-ls -la go/             # Go modules
-
-# Example: Build and test Rust implementation
-cd rust && cargo build && cargo test --workspace
+cd rust && cargo build --workspace && cargo test --workspace
 ```
 
-## Project Structure
+## Roadmap
 
-```
-AuthKit/
-├── rust/              # Rust crates (authkit-core, authkit-provider-*)
-├── typescript/        # TypeScript packages (npm packages)
-├── python/            # Python packages (PyPI packages)
-├── go/                # Go modules (pkg.go.dev modules)
-├── docs/              # Shared documentation & guides
-├── examples/          # Multi-language integration examples
-└── CLAUDE.md, AGENTS.md, PRD.md
-```
+1. **Now:** Stage and stabilize the five infrastructure crates above.
+2. **Next:** Extract them into `phenoShared` once their APIs are stable.
+3. **Later:** Reuse this repo (or a successor) for actual auth SDK work — at which point the README and crate layout will be rewritten to match.
 
-## Supported Auth Flows
-
-| Flow | Support | Use Case |
-|------|---------|----------|
-| OAuth 2.0 Authorization Code + PKCE | ✓ | Web apps, SPAs, mobile clients |
-| OAuth 2.0 Client Credentials | ✓ | Service-to-service, machine-to-machine |
-| OAuth 2.0 Device Code | ✓ | Input-constrained devices (CLI, IoT) |
-| OpenID Connect | ✓ | Identity + authentication |
-| SAML 2.0 | ✓ | Enterprise SSO |
-| WebAuthn/Passkeys | ✓ | Passwordless authentication |
-| JWT Validation | ✓ | Token introspection, API security |
-
-## Status
-
-🚧 Under construction — Phase 2 implementation (enterprise features, SDK hardening)
+Until step 3 happens, treat any reference to `authkit-core`, `authkit-provider-*`, or multi-language (TypeScript/Python/Go) auth bindings in older docs as aspirational — none of that code exists here.
 
 ## Related Phenotype Projects
 
-- **[PhenoPlugins](../PhenoPlugins)** — Plugin system supporting auth-aware extensions
-- **[McpKit](../McpKit)** — MCP tooling with AuthKit integration
-- **[bifrost-extensions](../bifrost-extensions)** — API gateway with unified authentication
-- **[phenoSDK](../phenoSDK)** — DEPRECATED (2026-04-05); auth consolidated into AuthKit. See `/docs/migrations/phenoSDK_to_AuthKit.md` for consolidation details.
+- **phenoShared** — destination for the staged crates above
+- **bifrost-extensions** — API gateway (separate auth concerns)
+- **PhenoPlugins** — plugin system
 
 ## License
 
