@@ -7,7 +7,7 @@ license.workspace = true
 authors.workspace = true
 
 [dependencies]
-phenotype-error-core = { path = "../phenotype-error-core" }
+phenotype-error-core = { git = "https://github.com/KooshaPari/phenoShared.git", branch = "main" }
 phenotype-content-hash = { path = "../phenotype-content-hash" }
 phenotype-serde-adapters = { path = "../phenotype-serde-adapters" }
 phenotype-time = { path = "../phenotype-time" }
