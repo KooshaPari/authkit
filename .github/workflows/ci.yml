@@ -43,7 +43,7 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
       - name: Setup Go
-        uses: actions/setup-go@v6
+        uses: actions/setup-go@1e17b89b4a10c5e0e1e5f4b5c5e1d4e2a8b9c5d
         with:
           go-version: '1.25'
       - name: Test Go
