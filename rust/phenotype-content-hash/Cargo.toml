@@ -8,7 +8,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/phenotype-labs/phenotype"
 
 [dependencies]
-sha2 = "0.10"
+sha2 = "0.11"
 sha3 = "0.11"
 blake3 = "1.5"
 hex = "0.4"
